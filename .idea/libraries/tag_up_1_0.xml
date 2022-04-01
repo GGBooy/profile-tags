@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tag-up-1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/tag-up/target/tag-up-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

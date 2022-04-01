@@ -1,0 +1,6 @@
+# 项目排除路径
+/tags-etl/target/
+/tags-model/target/
+/tags-oozie/target/
+/tags-up/target/
+/tags-web/target/
