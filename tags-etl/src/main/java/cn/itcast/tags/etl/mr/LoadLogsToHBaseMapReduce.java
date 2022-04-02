@@ -117,27 +117,6 @@
 //
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package cn.itcast.tags.etl.mr;
 
 import org.apache.hadoop.conf.Configuration;

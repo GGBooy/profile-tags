@@ -23,7 +23,9 @@ object HBaseBulkLoader {
 //    val args = Array("1", "tbl_tag_logs", "detail","/user/hive/warehouse/tags_dat.db/tbl_logs","/datas/output_hfile/tbl_tag_logs")
 //    val args = Array("2", "tbl_tag_goods", "detail","/user/hive/warehouse/tags_dat.db/tbl_goods","/datas/output_hfile/tbl_tag_goods")
 //    val args = Array("3", "tbl_tag_users", "detail","/user/hive/warehouse/tags_dat.db/tbl_users","/datas/output_hfile/tbl_tag_users")
-    val args = Array("4", "tbl_tag_orders", "detail","/user/hive/warehouse/tags_dat.db/tbl_orders","/datas/output_hfile/tbl_tag_orders")
+//    val args = Array("4", "tbl_tag_orders", "detail","/user/hive/warehouse/tags_dat.db/tbl_orders","/datas/output_hfile/tbl_tag_orders")
+    val args = Array("4", "tbl_tag_orders", "detail", "/user/hive/warehouse/tags_dat.db/tbl_tag_orders", "/datas/output_hfile/tbl_tag_orders"
+)
 
     if (args.length != 5) {
       println("Usage: required params: <DataType> <HBaseTable> <Family> <InputDir> <OutputDir>")

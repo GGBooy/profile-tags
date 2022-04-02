@@ -5,7 +5,7 @@ import cn.itcast.tags.meta.HBaseMeta
 import cn.itcast.tags.tools.HBaseTools
 import cn.itcast.tags.utils.SparkUtils
 import org.apache.spark.internal.Logging
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 import org.apache.spark.storage.StorageLevel
 
 /**
@@ -63,12 +63,20 @@ abstract class AbstractModel(modelName: String, modelType: ModelType) extends Lo
       // 规则数据封装到HBaseMeta中
       val hbaseMeta: HBaseMeta = HBaseMeta.getHBaseMeta(ruleMap)
       // 依据条件到HBase中获取业务数据
-      businessDF = HBaseTools.read(
+      /*businessDF = HBaseTools.read(
         spark, hbaseMeta.zkHosts, hbaseMeta.zkPort,
         hbaseMeta.hbaseTable,
         hbaseMeta.family,
         hbaseMeta.selectFieldNames.split(",").toSeq
-      )
+      )*/
+      businessDF = spark.read
+        .format("hbase")
+        .option("zkHosts", hbaseMeta.zkHosts)
+        .option("zkPort", hbaseMeta.zkPort)
+        .option("hbaseTable", hbaseMeta.hbaseTable)
+        .option("family", hbaseMeta.family)
+        .option("selectFields", hbaseMeta.selectFieldNames)
+        .load()
     } else {
       // 如果未获取到数据，直接抛出异常
       new RuntimeException("业务标签未提供数据源信息，获取不到业务数据，无法计算标签")
@@ -82,14 +90,23 @@ abstract class AbstractModel(modelName: String, modelType: ModelType) extends Lo
 
   // 5. 5. 保存画像标签数据至HBase表
   def saveTag(modelDF: DataFrame): Unit = {
-    HBaseTools.write(
+    /*HBaseTools.write(
       modelDF,
       ModelConfig.PROFILE_TABLE_ZK_HOSTS,
       ModelConfig.PROFILE_TABLE_ZK_PORT, //
       ModelConfig.PROFILE_TABLE_NAME,
       ModelConfig.PROFILE_TABLE_FAMILY_USER,
       ModelConfig.PROFILE_TABLE_ROWKEY_COL
-    )
+    )*/
+    modelDF.write
+      .mode(SaveMode.Overwrite)
+      .format("hbase")
+      .option("zkHosts", ModelConfig.PROFILE_TABLE_ZK_HOSTS)
+      .option("zkPort", ModelConfig.PROFILE_TABLE_ZK_PORT)
+      .option("hbaseTable", ModelConfig.PROFILE_TABLE_NAME)
+      .option("family", ModelConfig.PROFILE_TABLE_FAMILY_USER)
+      .option("rowKeyColumn", ModelConfig.PROFILE_TABLE_ROWKEY_COL)
+      .save()
   }
 
   // 6. 关闭资源：应用结束，关闭会话实例对象
@@ -98,7 +115,7 @@ abstract class AbstractModel(modelName: String, modelType: ModelType) extends Lo
   }
 
   // 规定标签模型执行流程顺序
-  def executeModel(tagId: Long, isHive: Boolean): Unit = {
+  def executeModel(tagId: Long, isHive: Boolean = true): Unit = {
     // a. 初始化
     init(isHive)
     try {
