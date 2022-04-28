@@ -47,7 +47,7 @@ public class TagAndModelController {
             list = service.findByLevel(level);
         }
 
-        return new HttpResult<List<TagDto>>(1,"查询成功", list);
+        return new HttpResult<List<TagDto>>(Codes.SUCCESS,"查询成功", list);
     }
 
     /**

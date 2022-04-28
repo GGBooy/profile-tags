@@ -20,12 +20,12 @@ object HBaseBulkLoader {
   def main(args: Array[String]): Unit = {
     // 应用执行时传递5个参数：数据类型、HBase表名称、表列簇、输入路径及输出路径
 
-//    val args = Array("1", "tbl_tag_logs", "detail","/user/hive/warehouse/tags_dat.db/tbl_logs","/datas/output_hfile/tbl_tag_logs")
-//    val args = Array("2", "tbl_tag_goods", "detail","/user/hive/warehouse/tags_dat.db/tbl_goods","/datas/output_hfile/tbl_tag_goods")
-//    val args = Array("3", "tbl_tag_users", "detail","/user/hive/warehouse/tags_dat.db/tbl_users","/datas/output_hfile/tbl_tag_users")
-//    val args = Array("4", "tbl_tag_orders", "detail","/user/hive/warehouse/tags_dat.db/tbl_orders","/datas/output_hfile/tbl_tag_orders")
-    val args = Array("4", "tbl_tag_orders", "detail", "/user/hive/warehouse/tags_dat.db/tbl_tag_orders", "/datas/output_hfile/tbl_tag_orders"
-)
+    //    val args = Array("1", "tbl_tag_logs", "detail","/user/hive/warehouse/tags_dat.db/tbl_logs","/datas/output_hfile/tbl_tag_logs")
+    //    val args = Array("2", "tbl_tag_goods", "detail","/user/hive/warehouse/tags_dat.db/tbl_goods","/datas/output_hfile/tbl_tag_goods")
+    //    val args = Array("3", "tbl_tag_users", "detail","/user/hive/warehouse/tags_dat.db/tbl_users","/datas/output_hfile/tbl_tag_users")
+    //    val args = Array("4", "tbl_tag_orders", "detail","/user/hive/warehouse/tags_dat.db/tbl_orders","/datas/output_hfile/tbl_tag_orders")
+    //    val args = Array("4", "tbl_tag_orders", "detail", "/user/hive/warehouse/tags_dat.db/tbl_tag_orders", "/datas/output_hfile/tbl_tag_orders")
+    val args = Array("5", "tbl_tag_corp_wash", "detail", "/user/hive/warehouse/tags_dat.db/tbl_corp_wash", "/datas/output_hfile/tbl_tag_corp_wash")
 
     if (args.length != 5) {
       println("Usage: required params: <DataType> <HBaseTable> <Family> <InputDir> <OutputDir>")
@@ -39,6 +39,7 @@ object HBaseBulkLoader {
       case 2 => TableFieldNames.GOODS_FIELD_NAMES
       case 3 => TableFieldNames.USER_FIELD_NAMES
       case 4 => TableFieldNames.ORDER_FIELD_NAMES
+      case 5 => TableFieldNames.CORP_SELECTED_FIELD_NAMES
     }
     // 1. 构建SparkContext实例对象
     val sc: SparkContext = {
@@ -46,8 +47,7 @@ object HBaseBulkLoader {
       val sparkConf = new SparkConf()
         .setMaster("local[2]")
         .setAppName(this.getClass.getSimpleName.stripSuffix("$"))
-        .set("spark.serializer",
-          "org.apache.spark.serializer.KryoSerializer")
+        .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       // b. 传递SparkContext创建对象
       SparkContext.getOrCreate(sparkConf)
     }
@@ -111,8 +111,7 @@ object HBaseBulkLoader {
     // 获取id，构建RowKey
     val id: String = fieldValues(0)
     val rowKey = Bytes.toBytes(id)
-    val ibw: ImmutableBytesWritable = new
-        ImmutableBytesWritable(rowKey)
+    val ibw: ImmutableBytesWritable = new ImmutableBytesWritable(rowKey)
     // 列簇
     val columnFamily: Array[Byte] = Bytes.toBytes(family)
     // 构建KeyValue对象

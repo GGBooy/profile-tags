@@ -31,8 +31,7 @@ object HBaseMeta {
   def getHBaseMeta(ruleMap: Map[String, String]): HBaseMeta = {
 
     // a. 获取条件字段的值
-    val whereCondition: String = ruleMap.getOrElse("whereCondition",
-      null)
+    val whereCondition: String = ruleMap.getOrElse("whereCondition", null)
     // b. 解析条件字段的值，构建WHERE CAUSE语句
     /*
     whereCondition=modified#day#30

@@ -95,5 +95,39 @@ object TagTools {
     // 3. 返回标签规则
     ruleDF
   }
+
+
+  /**
+   * 依据[标签业务字段的值]与[标签规则]匹配，进行打标签（userId, tagName)
+   *
+   * @param dataframe 标签业务数据
+   * @param field     标签业务字段
+   * @param tagDF     标签数据
+   * @return 标签模型数据
+   */
+  def copyTag(dataframe: DataFrame, field: String, tagDF: DataFrame) = {
+    val spark: SparkSession = dataframe.sparkSession
+    import spark.implicits._
+//    // 1. 获取规则rule与tagId集合
+//    val attrTagRuleMap: Map[String, String] = convertMap(tagDF)
+//    // 2. 将Map集合数据广播出去
+//    val attrTagRuleMapBroadcast = spark.sparkContext.broadcast(attrTagRuleMap)
+//    // 3. 自定义UDF函数, 依据Job职业和属性标签规则进行标签化
+//    val field_to_tag: UserDefinedFunction = udf(
+//      (field: String) => attrTagRuleMapBroadcast.value(field)
+//    )
+    // 4. 计算标签，依据业务字段值获取标签ID
+    val modelDF: DataFrame = dataframe
+      .select(
+        $"id".as("userId"), //
+//        field_to_tag(col(field)).as(field)
+        col(field)
+      )
+    //modelDF.printSchema()
+    //modelDF.show(50, truncate = false)
+    // 5. 返回计算标签数据
+    modelDF
+  }
+
 }
 

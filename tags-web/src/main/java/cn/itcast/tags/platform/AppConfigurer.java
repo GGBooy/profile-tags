@@ -12,7 +12,7 @@ public class AppConfigurer implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-//                .allowedOrigins("*")
+//                .allowedOrigins("http://localhost:8080/")
                 .allowedOriginPatterns("*")
                 .allowedMethods("*");
     }

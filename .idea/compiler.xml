@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="tags-model_2.11" />
         <module name="tags-web" />
+        <module name="tags-ml_2.11" />
         <module name="tags-etl" />
         <module name="tags-up" />
         <module name="tags-oozie" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="static-web" target="8" />
       <module name="tag-up" target="1.8" />
     </bytecodeTargetLevel>
   </component>

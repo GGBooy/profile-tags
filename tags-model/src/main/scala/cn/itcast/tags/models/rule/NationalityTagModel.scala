@@ -8,10 +8,10 @@ class NationalityTagModel extends AbstractModel("国籍标签", ModelType.MATCH)
   override def doTag(businessDF: DataFrame, tagDF: DataFrame): DataFrame = {
     val modelDF = TagTools.ruleMatchTag(businessDF, "nationality", tagDF)
 
-//    modelDF.printSchema()
-//    modelDF.show(20, false)
-//    null
-    modelDF
+    modelDF.printSchema()
+    modelDF.show(20, false)
+    null
+//    modelDF
   }
 }
 

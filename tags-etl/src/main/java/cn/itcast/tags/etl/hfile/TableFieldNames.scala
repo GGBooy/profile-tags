@@ -277,4 +277,65 @@ object TableFieldNames {
     ("couponcodevalue", 110),
     ("ckcode", 111)
   )
+  val CORP_FIELD_NAMES: TreeMap[String, Int] = TreeMap(
+    ("id", 0),
+    ("Rating", 1),
+    ("Name", 2),
+    ("Symbol", 3),
+    ("ratingAgencyName", 4),
+    ("Date", 5),
+    ("Sector", 6),
+
+    ("currentRatio", 7),
+    ("quickRatio", 8),
+    ("cashRatio", 9),
+    ("daysOfSalesOutstanding", 10),
+    ("netProfitMargin", 11),
+    ("pretaxProfitMargin", 12),
+    ("grossProfitMargin", 13),
+    ("operatingProfitMargin", 14),
+    ("returnOnAssets", 15),
+    ("returnOnCapitalEmployed", 16),
+    ("returnOnEquity", 17),
+    ("assetTurnover", 18),
+    ("fixedAssetTurnover", 19),
+    ("debtEquityRatio", 20),
+    ("debtRatio", 21),
+    ("effectiveTaxRate", 22),
+    ("freeCashFlowOperatingCashFlowRatio", 23),
+    ("freeCashFlowPerShare", 24),
+    ("cashPerShare", 25),
+    ("companyEquityMultiplier", 26),
+    ("ebitPerRevenue", 27),
+    ("enterpriseValueMultiple", 28),
+    ("operatingCashFlowPerShare", 29),
+    ("operatingCashFlowSalesRatio", 30),
+    ("payablesTurnover", 31)
+  )
+
+  val CORP_SELECTED_FIELD_NAMES: TreeMap[String, Int] = TreeMap(
+    ("id", 0),
+    ("Rating", 1),
+    ("Name", 2),
+    ("Symbol", 3),
+    ("ratingAgencyName", 4),
+    ("Date", 5),
+    ("Sector", 6),
+    ("currentRatio", 7),
+    ("quickRatio", 8),
+    ("cashRatio", 9),
+    ("daysOfSalesOutstanding", 10),
+    ("grossProfitMargin", 11),
+    ("operatingProfitMargin", 12),
+    ("returnOnEquity", 13),
+    ("debtEquityRatio", 14),
+    ("debtRatio", 15),
+    ("effectiveTaxRate", 16),
+    ("freeCashFlowOperatingCashFlowRatio", 17),
+    ("cashPerShare", 18),
+    ("companyEquityMultiplier", 19),
+    ("enterpriseValueMultiple", 20),
+    ("payablesTurnover", 21)
+  )
+
 }

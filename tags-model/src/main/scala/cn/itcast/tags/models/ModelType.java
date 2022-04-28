@@ -9,4 +9,6 @@ public enum ModelType {
     ML // 挖掘
     ,
     STATISTICS // 统计
+    ,
+    ANALYSIS // 分析
 }
