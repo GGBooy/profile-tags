@@ -3,8 +3,7 @@ package cn.itcast.tags.up;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.*;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +13,33 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HDFSUtils {
     public static void main(String[] args) throws IOException, InterruptedException {
         HDFSUtils instance = HDFSUtils.getInstance();
         URI uri = instance.uri;
         System.out.println(uri);
-        FileSystem fs = FileSystem.get(uri, instance.config, instance.user);
+        FileSystem fs = FileSystem.get(uri, instance.config, "gjl");
         System.out.println(fs.exists(new Path(uri + "/tmp/")));
-        fs.mkdirs(new Path("/apps/tags/models/tags_46"));
+//        fs.mkdirs(new Path("/apps/tags/models/tags_46"));
+//        instance.copyToLocal("resources/result123456/part-00000-cbf47893-0003-4987-9299-ca8ccfeba2e3-c000.csv",
+//                "resources/result123456.csv");
+//        RemoteIterator<LocatedFileStatus> iter = fs.listFiles(new Path("resources/result123456/"), false);
+        List<String> files = new ArrayList<String>();
+        Path s_path = new Path("resources/result123456/");
+        if(fs.exists(s_path)){
+            for(FileStatus status:fs.listStatus(s_path)){
+                String path = status.getPath().toString();
+                files.add(path);
+                if (path.endsWith("csv")) {
+                    instance.copyToLocal(path,"tags-web/src/main/resources/static/result.csv");
+                }
+            }
+        }
+        fs.close();
+        System.out.println(files);
     }
 
     // 最好不要使用饿汉式, 因为一开始系统启动就一顿初始化不太好
@@ -49,9 +66,9 @@ public class HDFSUtils {
     private Logger logger = LoggerFactory.getLogger(HDFSUtils.class);
 
     // 因为以下三个东西, 整个类都要用到, 所以放在这
-    private Configuration config;
-    private URI uri;
-    private String user = "root";
+    public Configuration config;
+    public URI uri;
+    public String user = "root";
 
     private HDFSUtils() {
         // 创建 Hadoop 配置, 如果 classpath 下存在配置文件, 会自动读取
@@ -104,6 +121,13 @@ public class HDFSUtils {
     public Boolean copyFromFile(String src, String dst) {
         return handleProcess((fs) -> {
             fs.copyFromLocalFile(new Path(URLDecoder.decode(src,"utf-8")), new Path(dst));
+            return true;
+        });
+    }
+
+    public Boolean copyToLocal(String src, String dst) {
+        return handleProcess((fs) -> {
+            fs.copyToLocalFile(new Path(src), new Path(URLDecoder.decode(dst,"utf-8")));
             return true;
         });
     }

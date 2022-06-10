@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tags-model_2.11</artifactId>
+    <version>1.0.0</version>
 
     <repositories>
         <repository>
@@ -44,7 +45,7 @@
         <scala.version>2.11.8</scala.version>
         <hadoop.version>2.6.0-cdh5.14.0</hadoop.version>
         <spark.version>2.2.0</spark.version>
-        <hive.version>1.1.0-cdh5.14.0</hive.version>
+<!--        <hive.version>1.1.0-cdh5.14.0</hive.version>-->
         <oozie.version>4.1.0-cdh5.14.0</oozie.version>
         <hbase.version>1.2.0-cdh5.14.0</hbase.version>
         <solr.version>4.10.3-cdh5.14.0</solr.version>
@@ -60,6 +61,8 @@
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <maven-war-plugin.version>3.2.1</maven-war-plugin.version>
         <jetty-maven-plugin.version>9.4.10.v20180503</jetty-maven-plugin.version>
+        <build-helper-plugin.version>3.0.0</build-helper-plugin.version>
+        <scala-compiler-plugin.version>3.2.0</scala-compiler-plugin.version>
     </properties>
     <dependencies>
         <!-- Spark SQL 与 Hive 集成 依赖 -->
@@ -266,36 +269,92 @@
             <version>1.2.1</version>
         </dependency>
     </dependencies>
+
+<!--    <build>-->
+<!--        <outputDirectory>target/classes</outputDirectory>-->
+<!--        <testOutputDirectory>target/test-classes</testOutputDirectory>-->
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>${project.basedir}/src/main/resources</directory>-->
+<!--            </resource>-->
+<!--        </resources>-->
+<!--        &lt;!&ndash; Maven 编译的插件 &ndash;&gt;-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.0</version>-->
+<!--                <configuration>-->
+<!--                    <source>1.8</source>-->
+<!--                    <target>1.8</target>-->
+<!--                    <encoding>UTF-8</encoding>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>net.alchim31.maven</groupId>-->
+<!--                <artifactId>scala-maven-plugin</artifactId>-->
+<!--                <version>3.2.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>compile</goal>-->
+<!--                            <goal>testCompile</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
+
     <build>
-        <outputDirectory>target/classes</outputDirectory>
-        <testOutputDirectory>target/test-classes</testOutputDirectory>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-            </resource>
-        </resources>
-        <!-- Maven 编译的插件 -->
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                                <source>src/main/scala</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${scala-compiler-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>compile</goal>
                             <goal>testCompile</goal>
                         </goals>
+                        <configuration>
+                            <args>
+                                <arg>-dependencyfile</arg>
+                                <arg>${project.build.directory}/.scala_dependencies</arg>
+                            </args>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

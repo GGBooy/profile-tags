@@ -62,9 +62,10 @@ class CurrentRatioTagModel extends AbstractModel("流动比率", ModelType.MATCH
       // 选取字段
       .select($"userId", $"name".as("currentRatio"))
     modelDF.printSchema()
-    modelDF.show(20, truncate = true)
+    modelDF.show(5, truncate = false)
+    modelDF.groupBy("currentRatio").count().show(false)
     null
-    //    modelDF
+//    modelDF
   }
 }
 

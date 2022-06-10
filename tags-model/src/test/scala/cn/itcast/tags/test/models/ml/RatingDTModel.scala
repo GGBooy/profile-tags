@@ -37,16 +37,26 @@ object RatingDTModel {
 
     val addScore = udf((Rating: String) => {
       val score = Rating match {
+//        case "AAA" => 1.0
+//        case "AA" => 1.0
+//        case "A" => 0.8
+//        case "BBB" => 0.7
+//        case "BB" => 0.6
+//        case "B" => 0.5
+//        case "CCC" => 0.2
+//        case "CC" => 0.2
+//        case "C" => 0.2
+//        case "D" => 0.2
         case "AAA" => 1.0
-        case "AA" => 1.0
+        case "AA" => 0.8
         case "A" => 0.8
         case "BBB" => 0.7
-        case "BB" => 0.6
+        case "BB" => 0.5
         case "B" => 0.5
-        case "CCC" => 0.2
-        case "CC" => 0.2
-        case "C" => 0.2
-        case "D" => 0.2
+        case "CCC" => 0.3
+        case "CC" => 0.3
+        case "C" => 0.3
+        case "D" => 0.1
       }
       score * 10
     })
@@ -90,10 +100,10 @@ object RatingDTModel {
     val assembler: VectorAssembler = new VectorAssembler()
       // 设置特征列名称
       .setInputCols(businessDF.columns.slice(7, businessDF.columns.length -1))
-      //      .setOutputCol("raw_features")
-      .setOutputCol("features")
+      .setOutputCol("raw_features")
+//      .setOutputCol("features")
     val rawFeaturesDF: DataFrame = assembler.transform(df1)
-    return rawFeaturesDF
+//    return rawFeaturesDF
     //    rawFeaturesDF.printSchema()
     //    rawFeaturesDF.show(10, truncate = false)
 
@@ -153,7 +163,7 @@ object RatingDTModel {
 
     val prediction1 = model.transform(trainingData)
     val prediction2 = model.transform(testData)
-    val prediction3 = model.transform(applyDF)
+//    val prediction3 = model.transform(applyDF)
 
     val evaluator = new MulticlassClassificationEvaluator()
       .setLabelCol("indexedLabel")
@@ -163,21 +173,21 @@ object RatingDTModel {
     println(s"TRAIN ACCU = ${evaluator.evaluate(prediction1)}")
     prediction2.show(50, false)
     println(s"TEST ACCU = ${evaluator.evaluate(prediction2)}")
-    prediction3.show(50, false)
-    println(s"APPLY ACCU = ${evaluator.evaluate(prediction3)}")
+//    prediction3.show(50, false)
+//    println(s"APPLY ACCU = ${evaluator.evaluate(prediction3)}")
     val treeModel = model.stages(2).asInstanceOf[DecisionTreeClassificationModel]
     println("Learned classification tree model:\n" + treeModel.toDebugString)
 
-    import prediction1.sparkSession.implicits._
-    prediction1.select($"score", $"predictedLabel")
-      .write.format("com.databricks.spark.csv")
-      .option("header", "true").save("train.csv")
-    prediction2.select($"score", $"predictedLabel")
-      .write.format("com.databricks.spark.csv")
-      .option("header", "true").save("test.csv")
-    prediction3.select($"score", $"predictedLabel")
-      .write.format("com.databricks.spark.csv")
-      .option("header", "true").save("apply.csv")
+//    import prediction1.sparkSession.implicits._
+//    prediction1.select($"score", $"predictedLabel")
+//      .write.format("com.databricks.spark.csv")
+//      .option("header", "true").save("train.csv")
+//    prediction2.select($"score", $"predictedLabel")
+//      .write.format("com.databricks.spark.csv")
+//      .option("header", "true").save("test.csv")
+//    prediction3.select($"score", $"predictedLabel")
+//      .write.format("com.databricks.spark.csv")
+//      .option("header", "true").save("apply.csv")
 
 //    val p = prediction1.select($"predictedLabel")
 //    val r = prediction1.select("score")

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="Maven 1" modules="tags-etl,tags-model_2.11" />
+    <profile name="Maven 1" modules="tags-etl" />
     <profile name="Maven 2" modules="tag-up">
       <parameters>
         <parameter value="-dependencyfile" />
         <parameter value="E:\My Document\Documents\JAVA\profile-tags\tag-up\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 3" modules="tags-up">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\My Document\Documents\JAVA\profile-tags\tags-up\target/.scala_dependencies" />
+      </parameters>
+    </profile>
+    <profile name="Maven 4" modules="tags-model_2.11">
+      <parameters>
+        <parameter value="-dependencyfile" />
+        <parameter value="E:\My Document\Documents\JAVA\profile-tags\tags-model\target/.scala_dependencies" />
       </parameters>
     </profile>
   </component>

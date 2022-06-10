@@ -36,8 +36,7 @@ object SparkUtils {
    * 构建SparkSession实例对象，如果是本地模式，设置master
    * @return
    */
-  def createSparkSession(clazz: Class[_], isHive: Boolean = false):
-  SparkSession = {
+  def createSparkSession(clazz: Class[_], isHive: Boolean = false): SparkSession = {
     // 1. 构建SparkConf对象
     val sparkConf: SparkConf = loadConf(resource = "spark.properties")
     // 2. 判断应用是否是本地模式运行，如果是设置

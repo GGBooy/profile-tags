@@ -10,10 +10,10 @@ class SectorTagModel extends AbstractModel("企业类型", ModelType.MATCH){
     val modelDF = TagTools.ruleMatchTag(businessDF, "Sector", tagDF)
 
     modelDF.printSchema()
-    modelDF.show(20, true)
-    modelDF.groupBy("Sector").count().show(truncate = true)
-//    null
-    modelDF
+    modelDF.show(10, false)
+    modelDF.groupBy("Sector").count().show(truncate = false)
+    null
+//    modelDF
   }
 }
 object SectorTagModel{
